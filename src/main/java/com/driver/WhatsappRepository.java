@@ -213,12 +213,13 @@ public class WhatsappRepository {
         this.customGroupCount = 0;
         this.messageId = 0;
     }
-    public boolean isNewUser(String mobile){
+    public boolean isPresentMobile(String mobile){
         if(userData.containsKey(mobile)) return false;
         return true;
     }
-    public void createUser(String name, String mobile) {
+    public String createUser(String name, String mobile) {
         userData.put(mobile,new User(name,mobile));
+        return "SUCCESS";
     }
 
     public Group createGroup(List<User> users){
