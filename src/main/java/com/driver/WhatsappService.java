@@ -30,8 +30,7 @@ public class WhatsappService {
         return whatsappDB.changeAdmin(approver, user, group);
     }
 
-    public int sendMessage(Message message, User sender, Group group)
-    {
-        return sendMessage(message, sender, group);
+    public int sendMessage(Message message, User sender, Group group) throws Exception{
+        return whatsappDB.sendMessage(message, sender, group);
     }
 }
