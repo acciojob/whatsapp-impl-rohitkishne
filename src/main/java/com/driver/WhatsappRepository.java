@@ -50,13 +50,13 @@ public class WhatsappRepository {
         if(groupSize>2)
             {
                 //Group size is greater is 2 --> so need to increase the cnt
-                customGroupCount++;
+                this.customGroupCount++;
 
                 //first one in a list is admin
                 User admin = users.get(0);
 
                 //Create a name for a Group
-                String name = "Group "+customGroupCount;
+                String name = "Group "+this.customGroupCount;
 
                 //create a group
                 Group group = new Group(name, groupSize);
@@ -88,8 +88,8 @@ public class WhatsappRepository {
     public int createMessage(String msg)
     {
         messageId++;
-        Message message = new Message(messageId, msg, new Date());
-        return messageId;
+        Message message = new Message(messageId, msg);
+        return this.messageId;
     }
 
     public String changeAdmin(User approver, User user, Group group) throws Exception{
@@ -162,7 +162,7 @@ public class WhatsappRepository {
         List<User> userList = groupUserMap.get(group);
         for(User u : userList)
         {
-            if(u.getName().equals(user.getName()))
+            if(u.equals(user))
             {
                 return true;
             }
@@ -172,7 +172,7 @@ public class WhatsappRepository {
     public boolean isAdmin(User admin, Group group)
     {
         User currentAdmin = adminMap.get(group);
-        if(currentAdmin.getName().equals(admin.getName()))
+        if(currentAdmin.equals(admin))
         {
             return true;
         }
