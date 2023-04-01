@@ -13,7 +13,7 @@ public class WhatsappRepository {
     private HashMap<Group, List<Message>> groupMessageMap;
     private HashMap<Message, User> senderMap;
     private HashMap<Group, User> adminMap;
-    private HashSet<String> userMobile;
+    private HashMap<String, User> userMobile;
     private int customGroupCount;
     private int messageId;
 
@@ -22,8 +22,156 @@ public class WhatsappRepository {
         this.groupUserMap = new HashMap<Group, List<User>>();
         this.senderMap = new HashMap<Message, User>();
         this.adminMap = new HashMap<Group, User>();
-        this.userMobile = new HashSet<>();
+        this.userMobile = new HashMap<>();
         this.customGroupCount = 0;
         this.messageId = 0;
     }
+
+    public boolean isPresentMobile(String mobile)
+    {
+        if(userMobile.containsKey(mobile))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public String createUser(String name, String mobile)
+    {
+        userMobile.put(name, new User(name, mobile));
+        return "SUCCESS";
+    }
+
+    public Group createGroup(List<User> users)
+    {
+        //count the size of the userlist;
+        int groupSize = users.size();
+
+        Group group = new Group();
+
+        if(groupSize>=2)
+        {
+            if(groupSize>2)
+            {
+                //Group size is greater is 2 --> so need to increase the cnt
+                customGroupCount++;
+
+                //first one in a list is admin
+                User admin = users.get(0);
+
+                //Create a name for a Group
+                String name = "Group "+customGroupCount;
+
+                //create a group
+                group = new Group(name, groupSize, users);
+
+                adminMap.put(group, admin);
+
+                groupUserMap.put(group, users);
+            }
+            else
+            {
+                //first one in a list is admin
+                User admin = users.get(0);
+
+                //Create a name for a Group
+                String name = users.get(1).getName();
+
+                //create a group
+                group = new Group(name, groupSize, users);
+
+                adminMap.put(group, admin);
+
+                groupUserMap.put(group, users);
+            }
+        }
+
+        return group;
+    }
+
+    public int createMessage(String msg)
+    {
+        messageId++;
+        Message message = new Message(messageId, msg, new Date());
+        return messageId;
+    }
+
+    public String changeAdmin(User approver, User user, Group group) throws Exception{
+        //Group does not exist
+        if(!groupUserMap.containsKey(group))
+        {
+            throw new Exception("Group does not exist");
+        }
+
+        //Approver is not a admin
+        if(isAdmin(approver, group)==false)
+        {
+            throw new Exception("Approver does not have rights");
+        }
+
+        //check user in the group
+        if(isUser(user, group)==false)
+        {
+            throw new Exception("User is not a participant" );
+        }
+
+        //change the admin
+
+        adminMap.put(group, user);
+        return "SUCCESS";
+
+    }
+
+    public int sendMessage(Message message, User sender, Group group) throws Exception{
+        //check group is exist or not
+        if(!groupUserMap.containsKey(group))
+        {
+            throw new Exception("Group does not exist");
+        }
+
+        //check sender is a part of group or not
+        if(isUser(sender, group)==false)
+        {
+            throw new Exception("You are not allowed to send message");
+        }
+
+        //send the msg
+        if(groupMessageMap.containsKey(group))
+        {
+            List<Message> msgList = groupMessageMap.get(group);
+            msgList.add(message);
+            int noOfMsg = msgList.size();
+            groupMessageMap.put(group, msgList);
+            return noOfMsg;
+        }
+
+        List<Message> msgList = new ArrayList<>();
+        msgList.add(message);
+        int noOfMsg = msgList.size();
+        groupMessageMap.put(group, msgList);
+        return noOfMsg;
+    }
+
+    public boolean isUser(User user, Group group)
+    {
+        List<User> userList = groupUserMap.get(group);
+        for(User u : userList)
+        {
+            if(u.getName().equals(user.getName()))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean isAdmin(User admin, Group group)
+    {
+        User currentAdmin = adminMap.get(group);
+        if(currentAdmin.getName().equals(admin.getName()))
+        {
+            return true;
+        }
+        return false;
+    }
+
 }
