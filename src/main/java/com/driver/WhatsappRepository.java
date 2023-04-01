@@ -47,11 +47,7 @@ public class WhatsappRepository {
         //count the size of the userlist;
         int groupSize = users.size();
 
-        Group group = new Group();
-
-        if(groupSize>=2)
-        {
-            if(groupSize>2)
+        if(groupSize>2)
             {
                 //Group size is greater is 2 --> so need to increase the cnt
                 customGroupCount++;
@@ -63,30 +59,30 @@ public class WhatsappRepository {
                 String name = "Group "+customGroupCount;
 
                 //create a group
-                group = new Group(name, groupSize);
+                Group group = new Group(name, groupSize);
 
                 adminMap.put(group, admin);
 
                 groupUserMap.put(group, users);
+
+                return group;
             }
-            else
-            {
-                //first one in a list is admin
-                User admin = users.get(0);
 
-                //Create a name for a Group
-                String name = users.get(1).getName();
+            //first one in a list is admin
+            User admin = users.get(0);
 
-                //create a group
-                group = new Group(name, groupSize);
+            //Create a name for a Group
+            String name = users.get(1).getName();
 
-                adminMap.put(group, admin);
+            //create a group
+            Group group = new Group(name, groupSize);
 
-                groupUserMap.put(group, users);
-            }
-        }
+            adminMap.put(group, admin);
 
-        return group;
+            groupUserMap.put(group, users);
+
+            return group;
+
     }
 
     public int createMessage(String msg)
