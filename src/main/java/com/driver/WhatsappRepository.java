@@ -136,19 +136,28 @@ public class WhatsappRepository {
         }
 
         //send the msg
+        List<Message> msgList = new ArrayList<>();
         if(groupMessageMap.containsKey(group))
         {
-            List<Message> msgList = groupMessageMap.get(group);
-            msgList.add(message);
-            int noOfMsg = msgList.size();
-            groupMessageMap.put(group, msgList);
-            return noOfMsg;
+            msgList = groupMessageMap.get(group);
         }
 
-        List<Message> msgList = new ArrayList<>();
         msgList.add(message);
         int noOfMsg = msgList.size();
         groupMessageMap.put(group, msgList);
+//        if(groupMessageMap.containsKey(group))
+//        {
+//            List<Message> msgList = groupMessageMap.get(group);
+//            msgList.add(message);
+//            int noOfMsg = msgList.size();
+//            groupMessageMap.put(group, msgList);
+//            return noOfMsg;
+//        }
+//
+//        List<Message> msgList = new ArrayList<>();
+//        msgList.add(message);
+//        int noOfMsg = msgList.size();
+//        groupMessageMap.put(group, msgList);
         return noOfMsg;
     }
 

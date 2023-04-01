@@ -7,25 +7,12 @@ public class Group {
     private String name;
     private int numberOfParticipants;
 
-    private List<User> userList;
-
     public Group() {
-    }
-
-    public Group(String name) {
-        this.name = name;
     }
 
     public Group(String name, int numberOfParticipants) {
         this.name = name;
         this.numberOfParticipants = numberOfParticipants;
-    }
-
-
-    public Group(String name, int numberOfParticipants, List<User> userList) {
-        this.name = name;
-        this.numberOfParticipants = numberOfParticipants;
-        this.userList = new ArrayList<>();
     }
 
     public String getName() {
@@ -42,13 +29,5 @@ public class Group {
 
     public void setNumberOfParticipants(int numberOfParticipants) {
         this.numberOfParticipants = numberOfParticipants;
-    }
-
-    public List<User> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
     }
 }
