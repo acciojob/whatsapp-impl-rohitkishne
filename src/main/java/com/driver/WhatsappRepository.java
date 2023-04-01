@@ -38,7 +38,7 @@ public class WhatsappRepository {
 
     public String createUser(String name, String mobile)
     {
-        userMobile.put(name, new User(name, mobile));
+        userMobile.put(mobile, new User(name, mobile));
         return "SUCCESS";
     }
 
@@ -63,7 +63,7 @@ public class WhatsappRepository {
                 String name = "Group "+customGroupCount;
 
                 //create a group
-                group = new Group(name, groupSize, users);
+                group = new Group(name, groupSize);
 
                 adminMap.put(group, admin);
 
@@ -78,7 +78,7 @@ public class WhatsappRepository {
                 String name = users.get(1).getName();
 
                 //create a group
-                group = new Group(name, groupSize, users);
+                group = new Group(name, groupSize);
 
                 adminMap.put(group, admin);
 
